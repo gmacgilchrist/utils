@@ -26,14 +26,14 @@ def get_xgcm_horizontal(ds,gridlon='lon',gridlat='lat',periodic=None):
     ''' Generate metrics and grid locations'''
 
     ds = generate_grid_ds(ds, {'X':gridlon,'Y':gridlat})
-    xgrid = Grid(ds, periodic=['X'])
+    xgrid = Grid(ds, periodic=periodic)
 
     # Get horizontal distances
     dlonG = xgrid.diff(ds[gridlon], 'X', boundary_discontinuity=360)
     dlonC = xgrid.diff(ds[gridlon+'_left'], 'X', boundary_discontinuity=360)
 
     dlatG = xgrid.diff(ds[gridlat], 'Y', boundary='fill', fill_value=np.nan)
-    dlatC = xgrid.diff(ds[gridlat+'_left'], 'Y', boundary='fill', fill_value=np.nan)
+    dlatC = -xgrid.diff(ds[gridlat+'_left'], 'Y', boundary='fill', fill_value=np.nan)
 
     ds['dxG'], ds['dyG'] = _degrees_to_meters(dlonG, dlatG, ds[gridlon], ds[gridlat])
     ds['dxC'], ds['dyC'] = _degrees_to_meters(dlonC, dlatC, ds[gridlon], ds[gridlat])
