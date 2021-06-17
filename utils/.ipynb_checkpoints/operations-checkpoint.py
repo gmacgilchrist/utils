@@ -19,10 +19,10 @@ def crossing(da,dim,edge='above'):
 
 def extrema(da,dim,order=1):
     '''Return the coordinate along dim where there are local
-    extrema. order specified how far out the condition needs
+    extrema. order specifies how far out the condition needs
     to be satisfied.'''
     ind = argrelextrema(da.values,np.less,order=order)
-    mn = da[dim].isel(gamma_n=ind[0])
+    mn = da[dim].isel({dim:ind[0]})
     ind = argrelextrema(da.values,np.greater,order=order)
-    mx = da[dim].isel(gamma_n=ind[0])
+    mx = da[dim].isel({dim:ind[0]})
     return {'min':mn,'max':mx}
