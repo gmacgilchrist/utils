@@ -18,7 +18,7 @@ def _degrees_to_meters(dlon, dlat, lon, lat):
         """
 
         distance_1deg_equator = 111000.0
-        dx = dlon * xr.ufuncs.cos(xr.ufuncs.deg2rad(lat)) * distance_1deg_equator
+        dx = dlon * np.cos(np.deg2rad(lat)) * distance_1deg_equator
         dy = ((lon * 0) + 1) * dlat * distance_1deg_equator
         return dx, dy
 
@@ -29,8 +29,8 @@ def get_xgcm_horizontal(ds,gridlon='lon',gridlat='lat',periodic=None):
     xgrid = Grid(ds, periodic=periodic)
 
     # Get horizontal distances
-    dlonG = xgrid.diff(ds[gridlon], 'X', boundary_discontinuity=360)
-    dlonC = xgrid.diff(ds[gridlon+'_left'], 'X', boundary_discontinuity=360)
+    dlonG = xgrid.diff(ds[gridlon], 'X')
+    dlonC = xgrid.diff(ds[gridlon+'_left'], 'X')
 
     dlatG = xgrid.diff(ds[gridlat], 'Y', boundary='fill', fill_value=np.nan)
     dlatC = -xgrid.diff(ds[gridlat+'_left'], 'Y', boundary='fill', fill_value=np.nan)

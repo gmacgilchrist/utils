@@ -1,26 +1,11 @@
 Metadata-Version: 2.1
 Name: utils
-Version: 0.1.dev3+g5214c3e
+Version: 0.1.dev6+gd7995c9.d20220716
 Summary: A cspace to collect snippets of code and utilities
 Home-page: https://github.com/gmacgilchrist/utils
 Author: Graeme MacGilchrist
 Author-email: AUTHOR@EMAIL.COM
 License: MIT
-Description: utils
-        ==============================
-        [![Build Status](https://github.com/gmacgilchrist/utils/workflows/Tests/badge.svg)](https://github.com/gmacgilchrist/utils/actions)
-        [![codecov](https://codecov.io/gh/gmacgilchrist/utils/branch/master/graph/badge.svg)](https://codecov.io/gh/gmacgilchrist/utils)
-        [![License:MIT](https://img.shields.io/badge/License-MIT-lightgray.svg?style=flt-square)](https://opensource.org/licenses/MIT)[![pypi](https://img.shields.io/pypi/v/utils.svg)](https://pypi.org/project/utils)
-        <!-- [![conda-forge](https://img.shields.io/conda/dn/conda-forge/utils?label=conda-forge)](https://anaconda.org/conda-forge/utils) -->[![Documentation Status](https://readthedocs.org/projects/utils/badge/?version=latest)](https://utils.readthedocs.io/en/latest/?badge=latest)
-        
-        
-        A cspace to collect snippets of code and utilities
-        
-        --------
-        
-        <p><small>Project based on the <a target="_blank" href="https://github.com/jbusecke/cookiecutter-science-project">cookiecutter science project template</a>.</small></p>
-        
-Platform: UNKNOWN
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Topic :: Scientific/Engineering
 Classifier: Intended Audience :: Science/Research
@@ -33,3 +18,18 @@ Classifier: Programming Language :: Python :: 3.8
 Classifier: License :: OSI Approved :: MIT License
 Requires-Python: >=3.6
 Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+utils
+==============================
+[![Build Status](https://github.com/gmacgilchrist/utils/workflows/Tests/badge.svg)](https://github.com/gmacgilchrist/utils/actions)
+[![codecov](https://codecov.io/gh/gmacgilchrist/utils/branch/master/graph/badge.svg)](https://codecov.io/gh/gmacgilchrist/utils)
+[![License:MIT](https://img.shields.io/badge/License-MIT-lightgray.svg?style=flt-square)](https://opensource.org/licenses/MIT)[![pypi](https://img.shields.io/pypi/v/utils.svg)](https://pypi.org/project/utils)
+<!-- [![conda-forge](https://img.shields.io/conda/dn/conda-forge/utils?label=conda-forge)](https://anaconda.org/conda-forge/utils) -->[![Documentation Status](https://readthedocs.org/projects/utils/badge/?version=latest)](https://utils.readthedocs.io/en/latest/?badge=latest)
+
+
+A cspace to collect snippets of code and utilities
+
+--------
+
+<p><small>Project based on the <a target="_blank" href="https://github.com/jbusecke/cookiecutter-science-project">cookiecutter science project template</a>.</small></p>
