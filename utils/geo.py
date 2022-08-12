@@ -22,30 +22,41 @@ def _degrees_to_meters(dlon, dlat, lon, lat):
         dy = ((lon * 0) + 1) * dlat * distance_1deg_equator
         return dx, dy
 
-def get_xgcm_horizontal(ds,gridlon='lon',gridlat='lat',periodic=None):
+def get_xgcm_horizontal(ds,axes_dims_dict,position=None,periodic=None):
     ''' Generate metrics and grid locations'''
-
-    ds = generate_grid_ds(ds, {'X':gridlon,'Y':gridlat})
+    
+    gridlon=axes_dims_dict['X']
+    gridlat=axes_dims_dict['Y']
+    
+    ds = generate_grid_ds(ds, {'X':gridlon,'Y':gridlat}, position=position)
     xgrid = Grid(ds, periodic=periodic)
 
+    if position is None:
+        suffix = 'left'
+    else:
+        suffix = position[1]
+        
     # Get horizontal distances
-    dlonG = xgrid.diff(ds[gridlon], 'X')
-    dlonC = xgrid.diff(ds[gridlon+'_left'], 'X')
+    dlonG = xgrid.diff(ds[gridlon], 'X', boundary_discontinuity=360)
+    dlonC = xgrid.diff(ds[gridlon+'_'+suffix], 'X', boundary_discontinuity=360)
 
     dlatG = xgrid.diff(ds[gridlat], 'Y', boundary='fill', fill_value=np.nan)
-    dlatC = -xgrid.diff(ds[gridlat+'_left'], 'Y', boundary='fill', fill_value=np.nan)
+    dlatC = xgrid.diff(ds[gridlat+'_'+suffix], 'Y', boundary='fill', fill_value=np.nan)
 
     ds['dxG'], ds['dyG'] = _degrees_to_meters(dlonG, dlatG, ds[gridlon], ds[gridlat])
     ds['dxC'], ds['dyC'] = _degrees_to_meters(dlonC, dlatC, ds[gridlon], ds[gridlat])
+    
+    ds['rC']=ds['dxC']*ds['dyC']
 
     # Regenerate grid
     coords = {
-        'X':{'center':gridlon,'left':gridlon+'_left'},
-        'Y':{'center':gridlat,'left':gridlat+'_left'},
+        'X':{'center':gridlon,suffix:gridlon+'_'+suffix},
+        'Y':{'center':gridlat,suffix:gridlat+'_'+suffix},
     }
     metrics = {
         'X':['dxC','dxG'],
         'Y':['dyC','dyG'],
+        ('X','Y'):['rC']
     }
     xgrid = Grid(ds,coords=coords,metrics=metrics,periodic=periodic)
 
