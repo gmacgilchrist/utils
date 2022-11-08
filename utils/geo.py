@@ -22,13 +22,14 @@ def _degrees_to_meters(dlon, dlat, lon, lat):
         dy = ((lon * 0) + 1) * dlat * distance_1deg_equator
         return dx, dy
 
-def get_xgcm_horizontal(ds,axes_dims_dict,position=None,periodic=None):
+def get_xgcm_horizontal(ds,axes_dims_dict,position=None,periodic=None,boundary_discontinuity=360):
     ''' Generate metrics and grid locations'''
     
     gridlon=axes_dims_dict['X']
     gridlat=axes_dims_dict['Y']
     
-    ds = generate_grid_ds(ds, {'X':gridlon,'Y':gridlat}, position=position)
+    ds = generate_grid_ds(ds, {'X':gridlon,'Y':gridlat},
+                          position=position)
     xgrid = Grid(ds, periodic=periodic)
 
     if position is None:
@@ -37,8 +38,8 @@ def get_xgcm_horizontal(ds,axes_dims_dict,position=None,periodic=None):
         suffix = position[1]
         
     # Get horizontal distances
-    dlonG = xgrid.diff(ds[gridlon], 'X', boundary_discontinuity=360)
-    dlonC = xgrid.diff(ds[gridlon+'_'+suffix], 'X', boundary_discontinuity=360)
+    dlonG = xgrid.diff(ds[gridlon], 'X', boundary_discontinuity=boundary_discontinuity)
+    dlonC = xgrid.diff(ds[gridlon+'_'+suffix], 'X', boundary_discontinuity=boundary_discontinuity)
 
     dlatG = xgrid.diff(ds[gridlat], 'Y', boundary='fill', fill_value=np.nan)
     dlatC = xgrid.diff(ds[gridlat+'_'+suffix], 'Y', boundary='fill', fill_value=np.nan)
