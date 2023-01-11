@@ -1,3 +1,4 @@
+.gitignore
 LICENSE.txt
 README.md
 environment.yml
@@ -55,20 +56,18 @@ tests/test_dummy.py
 utils/__init__.py
 utils/_version.py
 utils/averaging.py
+utils/bgc.py
 utils/dummy_module.py
 utils/geo.py
 utils/manipulation.py
 utils/operations.py
+utils/stats.py
 utils.egg-info/PKG-INFO
 utils.egg-info/SOURCES.txt
 utils.egg-info/dependency_links.txt
 utils.egg-info/not-zip-safe
 utils.egg-info/requires.txt
 utils.egg-info/top_level.txt
-utils/.ipynb_checkpoints/__init__-checkpoint.py
-utils/.ipynb_checkpoints/averaging-checkpoint.py
-utils/.ipynb_checkpoints/manipulation-checkpoint.py
-utils/.ipynb_checkpoints/operations-checkpoint.py
 utils/__pycache__/__init__.cpython-37.pyc
 utils/__pycache__/__init__.cpython-38.pyc
 utils/__pycache__/geo.cpython-37.pyc

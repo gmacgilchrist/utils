@@ -1,11 +1,12 @@
 Metadata-Version: 2.1
 Name: utils
-Version: 0.1.dev6+gd7995c9.d20220716
+Version: 0.1.dev10+g05ff6b9.d20230111
 Summary: A cspace to collect snippets of code and utilities
 Home-page: https://github.com/gmacgilchrist/utils
 Author: Graeme MacGilchrist
 Author-email: AUTHOR@EMAIL.COM
 License: MIT
+Platform: UNKNOWN
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Topic :: Scientific/Engineering
 Classifier: Intended Audience :: Science/Research
@@ -33,3 +34,5 @@ A cspace to collect snippets of code and utilities
 --------
 
 <p><small>Project based on the <a target="_blank" href="https://github.com/jbusecke/cookiecutter-science-project">cookiecutter science project template</a>.</small></p>
+
+
