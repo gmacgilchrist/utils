@@ -1,3 +1,4 @@
+.gitignore
 LICENSE.txt
 README.md
 environment.yml
@@ -60,6 +61,7 @@ utils/geo.py
 utils/gfdl.py
 utils/manipulation.py
 utils/operations.py
+utils/stats.py
 utils.egg-info/PKG-INFO
 utils.egg-info/SOURCES.txt
 utils.egg-info/dependency_links.txt
