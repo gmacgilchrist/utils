@@ -36,21 +36,35 @@ def _axis_is_periodic(periodic, axis):
         return axis in periodic
 
 
-def _wrap_discontinuity(delta, boundary_discontinuity):
+def _wrap_discontinuity(delta, boundary_discontinuity, axis=None):
         if boundary_discontinuity is None:
             return delta
+
+        if isinstance(boundary_discontinuity, dict):
+            if axis is None:
+                if len(boundary_discontinuity) == 1:
+                    boundary_discontinuity = next(iter(boundary_discontinuity.values()))
+                else:
+                    raise ValueError(
+                        "boundary_discontinuity is a dict; axis must be provided to select a value."
+                    )
+            else:
+                boundary_discontinuity = boundary_discontinuity.get(axis)
+                if boundary_discontinuity is None:
+                    return delta
+
         return ((delta + boundary_discontinuity / 2.0) % boundary_discontinuity) - (
             boundary_discontinuity / 2.0
         )
 
 
-def _center_to_left(coord, periodic=False, boundary_discontinuity=None):
+def _center_to_left(coord, periodic=False, boundary_discontinuity=None, axis=None):
         dim = coord.dims[0]
         prev = coord.shift({dim: 1})
 
         if periodic:
             prev = prev.where(prev.notnull(), coord.isel({dim: -1}))
-            delta = _wrap_discontinuity(coord - prev, boundary_discontinuity)
+            delta = _wrap_discontinuity(coord - prev, boundary_discontinuity, axis=axis)
             return coord - 0.5 * delta
 
         edge_delta = coord.isel({dim: 1}) - coord.isel({dim: 0})
@@ -59,13 +73,13 @@ def _center_to_left(coord, periodic=False, boundary_discontinuity=None):
         return 0.5 * (coord + prev)
 
 
-def _forward_diff(coord, periodic=False, boundary="extrapolate", boundary_discontinuity=None):
+def _forward_diff(coord, periodic=False, boundary="extrapolate", boundary_discontinuity=None, axis=None):
         dim = coord.dims[0]
         diffs = coord.diff(dim)
 
         if periodic:
             tail = coord.isel({dim: 0}) - coord.isel({dim: -1})
-            tail = _wrap_discontinuity(tail, boundary_discontinuity)
+            tail = _wrap_discontinuity(tail, boundary_discontinuity, axis=axis)
         elif boundary == "nan":
             tail = xr.full_like(coord.isel({dim: -1}), np.nan)
         else:
@@ -142,12 +156,18 @@ def get_xgcm_horizontal_regular(ds,axes_dims_dict,periodic=None,boundary_discont
 
     lon_left_name = f"{gridlon}_{suffix}"
     lat_left_name = f"{gridlat}_{suffix}"
-    lon_left = _center_to_left(lon, periodic=periodic_x, boundary_discontinuity=boundary_discontinuity)
+    lon_left = _center_to_left(
+        lon, periodic=periodic_x, boundary_discontinuity=boundary_discontinuity, axis="X"
+    )
     lat_left = _center_to_left(lat, periodic=periodic_y, boundary_discontinuity=None)
     ds = ds.assign_coords({lon_left_name: lon_left, lat_left_name: lat_left})
 
-    dlonG = _forward_diff(ds[gridlon], periodic=periodic_x, boundary_discontinuity=boundary_discontinuity)
-    dlonC = _forward_diff(ds[lon_left_name], periodic=periodic_x, boundary_discontinuity=boundary_discontinuity)
+    dlonG = _forward_diff(
+        ds[gridlon], periodic=periodic_x, boundary_discontinuity=boundary_discontinuity, axis="X"
+    )
+    dlonC = _forward_diff(
+        ds[lon_left_name], periodic=periodic_x, boundary_discontinuity=boundary_discontinuity, axis="X"
+    )
 
     y_boundary = "extrapolate" if periodic_y else "nan"
     dlatG = _forward_diff(ds[gridlat], periodic=periodic_y, boundary=y_boundary)
