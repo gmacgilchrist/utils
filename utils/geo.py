@@ -38,8 +38,9 @@ def get_xgcm_horizontal(ds,axes_dims_dict,position=None,periodic=None,boundary_d
         suffix = position[1]
         
     # Get horizontal distances
-    dlonG = xgrid.diff(ds[gridlon], 'X', boundary_discontinuity=boundary_discontinuity)
-    dlonC = xgrid.diff(ds[gridlon+'_'+suffix], 'X', boundary_discontinuity=boundary_discontinuity)
+    # This is a hacky replacement because xgcm has removed boundary_discontinuity keyword from diff
+    dlonG = xgrid.diff(ds[gridlon], 'X', boundary='fill', fill_value=ds[gridlon][-1]+ds[gridlon][-1]-ds[gridlon][-2])
+    dlonC = xgrid.diff(ds[gridlon+'_'+suffix], 'X', boundary='fill', fill_value=ds[gridlon+'_'+suffix][-1]+ds[gridlon+'_'+suffix][-1]-ds[gridlon+'_'+suffix][-2])
 
     dlatG = xgrid.diff(ds[gridlat], 'Y', boundary='fill', fill_value=np.nan)
     dlatC = xgrid.diff(ds[gridlat+'_'+suffix], 'Y', boundary='fill', fill_value=np.nan)
